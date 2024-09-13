@@ -17,3 +17,20 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 - Coletar de Dados
 - Processar dados {manipular, alterar}
 - apresentar dados
+
+# Escopo e variaveis
+
+- var { variavel global }
+- let { variavel de escopo limitado }
+- const { constante }
+
+# Tipos de Dados
+
+- String (textos): "", '', ``
+- Number (numeros): 1, 2, 3, 1000, 1.5, 2.5
+- Boolean (booleanos): true, false
+- Null
+- Undefined
+- Object
+- Array
+- Function
