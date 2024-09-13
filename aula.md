@@ -34,3 +34,11 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 - Object
 - Array
 - Function
+
+# Operadores 
+
+- Atribuição { = }
+- Concatenação { + }
+- Matemáticos { +, -, *, /, %, ++, -- }
+- Lógicos { &&, ||, ! }
+- Relacionais { >, <, >=, <=, ==, !=, ===, !== }
