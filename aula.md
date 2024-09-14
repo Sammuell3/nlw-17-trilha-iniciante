@@ -21,13 +21,13 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 # Escopo e variaveis
 
 - var { variavel global }
-- let { variavel de escopo limitado }
-- const { constante }
+- [x] let { variavel de escopo limitado }
+- [x] const { constante }
 
 # Tipos de Dados
 
-- String (textos): "", '', ``
-- Number (numeros): 1, 2, 3, 1000, 1.5, 2.5
+- [x] String (textos): "", '', ``
+- [x] Number (numeros): 1, 2, 3, 1000, 1.5, 2.5
 - Boolean (booleanos): true, false
 - Null
 - Undefined
@@ -37,7 +37,7 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 
 # Operadores 
 
-- Atribuição { = }
+- [x] Atribuição { = }
 - Concatenação { + }
 - Matemáticos { +, -, *, /, %, ++, -- }
 - Lógicos { &&, ||, ! }
