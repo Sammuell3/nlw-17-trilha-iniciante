@@ -43,4 +43,13 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 - [x] Concatenação { + }
 - Matemáticos { +, -, *, /, %, ++, -- }
 - Lógicos { &&, ||, ! }
-- Relacionais { >, <, >=, <=, ==, !=, ===, !== }
+- [x] Relacionais { >, <, >=, <=, ==, !=, ===, !== }
+
+# Modulos Node.js
+
+[x] Importação de modulos(requirer, Commons)
+[x] Biblioteca (requirer) para criar prompts interativo
+[x] Exportação de modulos(exports, module.exports)
+
+# Programação assincrona e promisses
+[x] uso de funções assincronas (asyb/await)

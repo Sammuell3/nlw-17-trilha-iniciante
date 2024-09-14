@@ -1,23 +1,44 @@
-// Estrutura de repetição
-function start() {
-    while (true) {
-        // enquanto true, o loop vai rodar
-        // se a opção for cadastrar, vai cadastrar
-           // Vai ficar rodando até que o usuário digite "sair"
-        // se a opção for listar, vai listar
-        // se a opção for sair, vai sair
-        let opcao = "sair"
-        switch(opcao) {
-            case "Vamos cadastrar":
-                console.log("Vamos cadastrar")
-                break;
-            case "Listar":
-                console.log("vamos listar")
-                break;
-            case "Sair":
-             return
-        }
+// Importa a função 'select' do pacote '@inquirer/prompts'
+const { select } = require("@inquirer/prompts")
+
+// Define uma função assíncrona chamada 'start'
+async function start() {
+  // Inicia um loop infinito
+  while (true) {
+    // Usa a função 'select' para criar um menu interativo
+    const opcao = await select({
+        message: "Menu >", // Mensagem exibida para o usuário
+        choices: [
+            // Opções do menu
+            {
+                name: "Cadastrar Meta", // Texto exibido
+                value: "cadastrar"      // Valor retornado quando selecionado
+            },
+            {
+                name: "Listar Meta", 
+                value: "listar"
+            },
+            {
+                name: "Sair",
+                value: "sair"
+            }
+        ]
+    })
+    
+    // Usa um switch para executar ações com base na opção selecionada
+    switch (opcao) {
+        case "cadastrar":
+            console.log("Cadastrar Meta")
+            break
+        case "listar":
+            console.log("Listar Meta")
+            break
+        case "sair":
+            console.log("Sair")
+            return // Sai da função e encerra o programa
     }
+  }
 }
 
-start() 
+// Chama a função 'start' para iniciar o programa
+start()
