@@ -7,9 +7,9 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 
 # Peças de uma linguagem de programação
 - [x] Comentarios
-- Declaração de Variaveis {const, let}
-- Tipos de dados {string, number, boolean}
-- Operadores { atribuição, concatenação, matematicos, lógicos}
+- [x] Declaração de Variaveis {const, let}
+- [x] Tipos de dados {string, number, boolean}
+- [x] Operadores { atribuição, concatenação, matematicos, lógicos}
 - Controle de fluxo {if, else}
 
 # Fazes da Resolução de Problemas
@@ -20,7 +20,6 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 
 # Escopo e variaveis
 
-- var { variavel global }
 - [x] let { variavel de escopo limitado }
 - [x] const { constante }
 
@@ -28,17 +27,20 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 
 - [x] String (textos): "", '', ``
 - [x] Number (numeros): 1, 2, 3, 1000, 1.5, 2.5
-- Boolean (booleanos): true, false
+- [x] Boolean (booleanos): true, false
 - Null
 - Undefined
-- Object
-- Array
-- Function
+- [x] Object (Objetos)
+  - Propriedades (Caracteristicas)
+  - Metodos (Ações)
+  - Acesso a propriedades: objeto.propriedade
+- [x] Array ( Uma lista de dados, que aceita qualquer tipo)
+- [x] Function ( Funções )
 
 # Operadores 
 
 - [x] Atribuição { = }
-- Concatenação { + }
+- [x] Concatenação { + }
 - Matemáticos { +, -, *, /, %, ++, -- }
 - Lógicos { &&, ||, ! }
 - Relacionais { >, <, >=, <=, ==, !=, ===, !== }
