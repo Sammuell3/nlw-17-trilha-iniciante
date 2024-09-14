@@ -8,9 +8,10 @@ let metas = {
         console.log("Meta criada com sucesso!")
     }
 }
-// Usando o método
-console.log(metas.isChecked())
-// function
-// Isso é uma arrow function
-// Arrow function é uma função que não tem nome
-const criarMeta = () => {}
+// metas (Objeto)
+// console (Objeto)
+// isChecked() (Método)
+// log() (Método)
+
+console.log(metas.value)
+metas.isChecked()
