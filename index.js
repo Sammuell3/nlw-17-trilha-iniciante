@@ -8,6 +8,8 @@ let metas = {
         console.log("Meta criada com sucesso!")
     }
 }
+// Usando o método
+console.log(metas.isChecked())
 // function
 // Isso é uma arrow function
 // Arrow function é uma função que não tem nome
