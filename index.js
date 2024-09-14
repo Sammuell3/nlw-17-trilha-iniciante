@@ -1,17 +1,13 @@
-// arrays, objetos
-// Objetos são uma coleção de dados que podem conter dados e funções
-let metas = {
-    value: "Ler um livro todo mes",
-    checkbox: false,
-    //Se colocarmos a função dentro do objeto, ela se torna um método
-    isChecked: () => {
-        console.log("Meta criada com sucesso!")
-    }
+// Estrutura de repetição
+function start() {
+    let count = 1
+    // Enquanto a condição for verdadeira, o bloco de código será executado
+    while (count <= 10) {
+        // Se a condição for falsa, o bloco de código não será executado
+        console.log(count)
+        // Incremento
+        count++
+    };
 }
-// metas (Objeto)
-// console (Objeto)
-// isChecked() (Método)
-// log() (Método)
 
-console.log(metas.value)
-metas.isChecked()
+start() // 1 2 3 4 5 6 7 8 9 10

@@ -10,7 +10,7 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 - [x] Declaração de Variaveis {const, let}
 - [x] Tipos de dados {string, number, boolean}
 - [x] Operadores { atribuição, concatenação, matematicos, lógicos}
-- Controle de fluxo {if, else}
+- [x] Controle de fluxo {if, else, while, switch}
 
 # Fazes da Resolução de Problemas
 
