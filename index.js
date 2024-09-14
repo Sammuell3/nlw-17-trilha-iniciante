@@ -1,3 +1,4 @@
 // arrays, objetos
 let metas = ["samuca", "iai"]
-console.log(metas[0])
+// concatenando arrays
+console.log(metas[0] = metas[1])
