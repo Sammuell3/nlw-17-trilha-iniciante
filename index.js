@@ -73,11 +73,25 @@ async function MetasRealizadas() {
         return;
     }
     await select({
-        message: "Metas realizadas",
+        message: "Metas realizadas" + realizadas.length,
         choices: [...realizadas]
     })
 }
 
+async function MetasAbertas() {
+    const abertas = metas.filter((meta)=> {
+        return !meta.checked
+    });
+
+    if(abertas.length == 0){
+        console.log("Não existe metas abertas :)")
+        return;
+    }
+    await select({
+        message: "Metas abertas" + abertas.length,
+        choices: [...abertas]
+    })
+}
 // Função principal do programa que controla o fluxo de interação via um menu.
 async function start() {
     // Loop infinito que mantém o menu ativo até que o usuário escolha sair.
@@ -99,6 +113,10 @@ async function start() {
                     value: "realizadas" 
                 },
                 {
+                    name: "Metas abertas",
+                    value: "abertas"
+                },
+                {
                     name: "sair", // Opção para sair do programa.
                     value: "sair" // Valor correspondente a esta opção.
                 }
@@ -109,14 +127,18 @@ async function start() {
         switch (opcao) {
             case "cadastrar": // Se o usuário escolheu a opção de cadastrar uma nova meta:
                 await cadastrarMeta() // Chama a função 'cadastrarMeta' para adicionar uma nova meta.
+                console.log(metas)
                 break
 
             case "Listar": // Se o usuário escolheu a opção de listar as metas:
                 await listarMetas() // Chama a função 'listarMetas' para listar as metas e marcar as concluídas.
                 break
-            case "Metas realizadas":
+            case "realizadas":
                 await MetasRealizadas()
                 break    
+            case "abertas":
+                await MetasAbertas()
+                break
             case "sair": // Se o usuário escolheu a opção de sair:
                 console.log("Até mais!")
                 return // Encerra o programa.
