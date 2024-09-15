@@ -9,6 +9,7 @@ let meta = {
     value: "Fazer programa", // Meta inicial já pré-definida.
     checked: false // Esta meta não está marcada como concluída.
 }
+let mensagem = "";
 
 // Cria um array 'metas', que vai armazenar todas as metas cadastradas. Inicialmente, contém a meta pré-definida.
 let metas = [meta];
@@ -23,12 +24,14 @@ async function cadastrarMeta() {
 
     // Verifica se o campo da meta está vazio. Se estiver:
     if (meta.length == 0) {
-        console.log("Meta não pode ser vazia") // Informa o usuário que a meta não pode ser vazia.
+       mensagem = "Meta não pode ser vazia" // Informa o usuário que a meta não pode ser vazia.
         return // Sai da função sem adicionar a meta, pois a entrada está inválida.
     }
 
     // Adiciona a nova meta ao array 'metas', com 'checkbox' inicializado como false (não concluída).
     metas.push({ value: meta, checked: false })
+
+    mensagem = "Meta cadastrada com sucesso!";
 }
 
 // Função assíncrona que permite listar as metas e marcar/desmarcar as metas como concluídas.
@@ -47,7 +50,7 @@ async function listarMetas() {
 
     // Verifica se não há metas cadastradas.
     if (metas.length == 0) {
-        console.log("Nenhuma meta selecionada!") // Exibe uma mensagem informando que não há metas para marcar.
+        mensagem = "Nenhuma meta selecionada!" // Exibe uma mensagem informando que não há metas para marcar.
         return
     }
 
@@ -61,7 +64,7 @@ async function listarMetas() {
     })
     
     // Informa que as metas selecionadas foram marcadas como concluídas.
-    console.log("Meta(s) marcadas como concluída(s)")
+    mensagem = "Meta(s) marcadas como concluída(s)"
 }
 
 async function MetasRealizadas() {
@@ -69,7 +72,7 @@ async function MetasRealizadas() {
         return meta.checked
     });
     if(realizadas.length == 0){
-        console.log("Não existe nenhuma meta realizada :(")
+        mensagem = "Não existe nenhuma meta realizada :("
         return;
     }
     await select({
@@ -84,7 +87,7 @@ async function MetasAbertas() {
     });
 
     if(abertas.length == 0){
-        console.log("Não existe metas abertas :)")
+       mensagem = "Não existe metas abertas :)"
         return;
     }
     await select({
@@ -105,7 +108,7 @@ async function deletarMetas() {
     })
 
     if (itemsADeletar.length == 0){
-        console.log("Nenhum item para deletar")
+       mensagem = "Nenhum item para deletar"
         return;
     }
 
@@ -116,12 +119,24 @@ async function deletarMetas() {
         
     })
 
-    console.log("Meta(s) deletada(s) com sucesso!")
+    mensagem = "Meta(s) deletada(s) com sucesso!";
+}
+
+const mostrarMensagem = () => {
+    console.clear()
+
+    if (mensagem != ""){
+        console.log(mensagem)
+        console.log("")
+        mensagem = ""
+    }
+
 }
 // Função principal do programa que controla o fluxo de interação via um menu.
 async function start() {
     // Loop infinito que mantém o menu ativo até que o usuário escolha sair.
     while (true) {
+        mostrarMensagem()
         // Usa a função 'select' para exibir o menu e capturar a escolha do usuário.
         const opcao = await select({
             message: "Menu >", // Exibe o título do menu.
@@ -157,9 +172,7 @@ async function start() {
         switch (opcao) {
             case "cadastrar": // Se o usuário escolheu a opção de cadastrar uma nova meta:
                 await cadastrarMeta() // Chama a função 'cadastrarMeta' para adicionar uma nova meta.
-                console.log(metas)
                 break
-
             case "Listar": // Se o usuário escolheu a opção de listar as metas:
                 await listarMetas() // Chama a função 'listarMetas' para listar as metas e marcar as concluídas.
                 break
