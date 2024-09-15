@@ -92,6 +92,32 @@ async function MetasAbertas() {
         choices: [...abertas]
     })
 }
+
+async function deletarMetas() {
+    const metasDesmarcadas = metas.map((meta)=> {
+        return {value: meta.value, checked: false}
+    })
+
+    const itemsADeletar = await checkbox({
+        message: "Selecione as metas que deseja deletar",
+        choices: [...metasDesmarcadas],
+        instructions: false
+    })
+
+    if (itemsADeletar.length == 0){
+        console.log("Nenhum item para deletar")
+        return;
+    }
+
+    itemsADeletar.forEach((item)=> {
+        metas = metas.filter((meta)=> {
+            return meta.value != item;
+        })
+        
+    })
+
+    console.log("Meta(s) deletada(s) com sucesso!")
+}
 // Função principal do programa que controla o fluxo de interação via um menu.
 async function start() {
     // Loop infinito que mantém o menu ativo até que o usuário escolha sair.
@@ -117,6 +143,10 @@ async function start() {
                     value: "abertas"
                 },
                 {
+                    name: "Deletar Metas",
+                    value: "deletar"
+                },
+                {
                     name: "sair", // Opção para sair do programa.
                     value: "sair" // Valor correspondente a esta opção.
                 }
@@ -138,6 +168,9 @@ async function start() {
                 break    
             case "abertas":
                 await MetasAbertas()
+                break
+            case "deletar":
+                await deletarMetas()
                 break
             case "sair": // Se o usuário escolheu a opção de sair:
                 console.log("Até mais!")
