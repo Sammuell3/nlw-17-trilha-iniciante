@@ -1,31 +1,40 @@
 // Importa as funções 'select', 'input' e 'checkbox' do pacote '@inquirer/prompts' para receber
 // entradas do usuário no terminal, de forma interativa.
 const { select, input, checkbox } = require("@inquirer/prompts")
+const fs = require("fs").promises;
 
-// Define um objeto 'meta' com duas propriedades:
-// 'value' contém o texto da meta que o usuário deseja atingir.
-// 'checkbox' indica se a meta foi marcada como concluída (false inicialmente).
-let meta = {
-    value: "Fazer programa", // Meta inicial já pré-definida.
-    checked: false // Esta meta não está marcada como concluída.
-}
+// Variável para exibir mensagens temporárias
 let mensagem = "";
 
-// Cria um array 'metas', que vai armazenar todas as metas cadastradas. Inicialmente, contém a meta pré-definida.
-let metas = [meta];
+// Cria um array 'metas', que vai armazenar todas as metas cadastradas.
+let metas = [];
 
-// Função assíncrona que permite ao usuário cadastrar uma nova meta.
+// Função para carregar metas do arquivo JSON
+const carregarMetas = async () => {
+    try {
+        const data = await fs.readFile("metas.json", "utf8")
+        metas = JSON.parse(data)
+    } catch (error) {
+        // Se houver erro na leitura, inicializa metas como array vazio
+        metas = []
+    }
+}
+
+// Função para salvar metas no arquivo JSON
+const salvarMetas = async () => {
+    await fs.writeFile("metas.json", JSON.stringify(metas, null, 2))
+}
+
+// Função para cadastrar uma nova meta
 async function cadastrarMeta() {
-
-    // Usa a função 'input' para solicitar ao usuário que insira o nome de uma nova meta.
     const meta = await input({
         message: "Digite o nome da meta", // Exibe essa mensagem no terminal solicitando uma meta ao usuário.
     })
 
     // Verifica se o campo da meta está vazio. Se estiver:
-    if (meta.length == 0) {
-       mensagem = "Meta não pode ser vazia" // Informa o usuário que a meta não pode ser vazia.
-        return // Sai da função sem adicionar a meta, pois a entrada está inválida.
+    if (meta.length === 0) {
+        mensagem = "Meta não pode ser vazia" // Informa o usuário que a meta não pode ser vazia.
+        return; // Sai da função sem adicionar a meta, pois a entrada está inválida.
     }
 
     // Adiciona a nova meta ao array 'metas', com 'checkbox' inicializado como false (não concluída).
@@ -34,72 +43,73 @@ async function cadastrarMeta() {
     mensagem = "Meta cadastrada com sucesso!";
 }
 
-// Função assíncrona que permite listar as metas e marcar/desmarcar as metas como concluídas.
+// Função para listar e marcar/desmarcar metas
 async function listarMetas() {
-    // Usa a função 'checkbox' para listar todas as metas e permitir que o usuário selecione quais deseja marcar.
+    if(metas.length === 0){
+        mensagem = "Não existe meta"
+        return;
+    }
+   
+    // Usa checkbox para permitir seleção múltipla
     const respostas = await checkbox({
         message: "Use as setas para selecionar as metas, aperte espaço para marcar e desmarcar, e enter para finalizar essa etapa",
         choices: [...metas], // Cada meta é exibida como uma escolha para o usuário.
         instructions: false // Não exibe as instruções automáticas da biblioteca.
     })
 
-     // Reseta todas as metas para não marcadas (checkbox = false).
-     metas.forEach(meta => {
+    // Reseta todas as metas para não marcadas (checkbox = false).
+    metas.forEach(meta => {
         meta.checked = false
     })
 
-    // Verifica se não há metas cadastradas.
-    if (metas.length == 0) {
-        mensagem = "Nenhuma meta selecionada!" // Exibe uma mensagem informando que não há metas para marcar.
-        return
-    }
-
-   
-    // Percorre as respostas (metas selecionadas pelo usuário) e marca essas metas como concluídas.
+    // Marca as metas selecionadas como concluídas
     respostas.forEach(resposta => {
-        const meta = metas.find(meta => {
-            return meta.value == resposta // Encontra a meta correspondente com base no valor da resposta.
-        })
-        meta.checked = true // Marca a meta como concluída (checkbox = true).
+        const meta = metas.find(meta => meta.value === resposta)
+        meta.checked = true
     })
     
-    // Informa que as metas selecionadas foram marcadas como concluídas.
     mensagem = "Meta(s) marcadas como concluída(s)"
 }
 
+// Função para mostrar metas realizadas
 async function MetasRealizadas() {
-    const realizadas = metas.filter((meta)=> {
-        return meta.checked
-    });
-    if(realizadas.length == 0){
+    const realizadas = metas.filter((meta) => meta.checked);
+    if(realizadas.length === 0){
         mensagem = "Não existe nenhuma meta realizada :("
-        return;
+        return; 
     }
     await select({
-        message: "Metas realizadas" + realizadas.length,
+        message: "Metas realizadas: " + realizadas.length,
         choices: [...realizadas]
     })
 }
 
+// Função para mostrar metas abertas (não realizadas)
 async function MetasAbertas() {
-    const abertas = metas.filter((meta)=> {
-        return !meta.checked
-    });
+    if(metas.length === 0){
+        mensagem = "Não existe meta"
+        return ;
+    }
+    const abertas = metas.filter((meta) => !meta.checked);
 
-    if(abertas.length == 0){
+    if(abertas.length === 0){
        mensagem = "Não existe metas abertas :)"
         return;
     }
     await select({
-        message: "Metas abertas" + abertas.length,
+        message: "Metas abertas: " + abertas.length,
         choices: [...abertas]
     })
 }
 
-async function deletarMetas() {
-    const metasDesmarcadas = metas.map((meta)=> {
-        return {value: meta.value, checked: false}
-    })
+// Função para deletar metas
+async function deletarMetas() { 
+    if(metas.length === 0){
+        mensagem = "Não existe meta"
+        return;
+    }
+   
+    const metasDesmarcadas = metas.map((meta) => ({value: meta.value, checked: false}))
 
     const itemsADeletar = await checkbox({
         message: "Selecione as metas que deseja deletar",
@@ -107,74 +117,55 @@ async function deletarMetas() {
         instructions: false
     })
 
-    if (itemsADeletar.length == 0){
+    if (itemsADeletar.length === 0){
        mensagem = "Nenhum item para deletar"
         return;
     }
 
-    itemsADeletar.forEach((item)=> {
-        metas = metas.filter((meta)=> {
-            return meta.value != item;
-        })
-        
-    })
+    // Remove as metas selecionadas
+    metas = metas.filter((meta) => !itemsADeletar.includes(meta.value))
 
     mensagem = "Meta(s) deletada(s) com sucesso!";
 }
 
+// Função para exibir mensagens temporárias
 const mostrarMensagem = () => {
     console.clear()
 
-    if (mensagem != ""){
+    if (mensagem !== ""){
         console.log(mensagem)
         console.log("")
         mensagem = ""
     }
-
 }
-// Função principal do programa que controla o fluxo de interação via um menu.
+
+// Função principal que controla o fluxo do programa
 async function start() {
-    // Loop infinito que mantém o menu ativo até que o usuário escolha sair.
+    await carregarMetas()
     while (true) {
         mostrarMensagem()
-        // Usa a função 'select' para exibir o menu e capturar a escolha do usuário.
+        await salvarMetas()
+        
+        // Menu principal
         const opcao = await select({
-            message: "Menu >", // Exibe o título do menu.
-            choices: [ // Lista de opções disponíveis no menu.
-                {
-                    name: "Cadastrar Meta", // Opção para cadastrar uma nova meta.
-                    value: "cadastrar" // Valor correspondente a esta opção.
-                },
-                {
-                    name: "Listar Metas", // Opção para listar e gerenciar as metas cadastradas.
-                    value: "Listar" // Valor correspondente a esta opção.
-                },
-                {
-                    name: "Metas realizadas", 
-                    value: "realizadas" 
-                },
-                {
-                    name: "Metas abertas",
-                    value: "abertas"
-                },
-                {
-                    name: "Deletar Metas",
-                    value: "deletar"
-                },
-                {
-                    name: "sair", // Opção para sair do programa.
-                    value: "sair" // Valor correspondente a esta opção.
-                }
+            message: "Menu >",
+            choices: [
+                { name: "Cadastrar Meta", value: "cadastrar" },
+                { name: "Listar Metas", value: "Listar" },
+                { name: "Metas realizadas", value: "realizadas" },
+                { name: "Metas abertas", value: "abertas" },
+                { name: "Deletar Metas", value: "deletar" },
+                { name: "Sair", value: "sair" }
             ]
         })
 
-        // Usa o 'switch' para determinar qual ação executar com base na escolha do usuário.
+        // Executa a ação correspondente à opção selecionada
         switch (opcao) {
-            case "cadastrar": // Se o usuário escolheu a opção de cadastrar uma nova meta:
-                await cadastrarMeta() // Chama a função 'cadastrarMeta' para adicionar uma nova meta.
+            case "cadastrar":
+                await cadastrarMeta()
                 break
-            case "Listar": // Se o usuário escolheu a opção de listar as metas:
-                await listarMetas() // Chama a função 'listarMetas' para listar as metas e marcar as concluídas.
+            case "Listar":
+                await listarMetas()
                 break
             case "realizadas":
                 await MetasRealizadas()
@@ -185,12 +176,12 @@ async function start() {
             case "deletar":
                 await deletarMetas()
                 break
-            case "sair": // Se o usuário escolheu a opção de sair:
+            case "sair":
                 console.log("Até mais!")
-                return // Encerra o programa.
+                return
         }
     }
 }
 
-// Inicia o programa chamando a função 'start', que exibe o menu e controla o fluxo.
+// Inicia o programa
 start()

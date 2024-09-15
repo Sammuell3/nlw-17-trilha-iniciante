@@ -51,6 +51,14 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 [x] Importação de modulos(requirer, Commons)
 [x] Biblioteca (requirer) para criar prompts interativo
 [x] Exportação de modulos(exports, module.exports)
+[x] Leitura e escrita de arquivos (fs)
+
+# JSON
+
+[x] Estrutura de dados (objeto)
+[x] Uso de JSON para salvar e carregar dados
+[x] JSON.parse() { Converte uma string JSON em um objeto JavaScript }
+[x] JSON.stringify() { Converte um objeto JavaScript em uma string JSON }
 
 # Programação assincrona e promisses
 [x] uso de funções assincronas (asyb/await)
