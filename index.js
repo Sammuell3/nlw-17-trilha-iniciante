@@ -7,7 +7,7 @@ const { select, input, checkbox } = require("@inquirer/prompts")
 // 'checkbox' indica se a meta foi marcada como concluída (false inicialmente).
 let meta = {
     value: "Fazer programa", // Meta inicial já pré-definida.
-    checkbox: false // Esta meta não está marcada como concluída.
+    checked: false // Esta meta não está marcada como concluída.
 }
 
 // Cria um array 'metas', que vai armazenar todas as metas cadastradas. Inicialmente, contém a meta pré-definida.
@@ -15,6 +15,7 @@ let metas = [meta];
 
 // Função assíncrona que permite ao usuário cadastrar uma nova meta.
 async function cadastrarMeta() {
+
     // Usa a função 'input' para solicitar ao usuário que insira o nome de uma nova meta.
     const meta = await input({
         message: "Digite o nome da meta", // Exibe essa mensagem no terminal solicitando uma meta ao usuário.
@@ -27,7 +28,7 @@ async function cadastrarMeta() {
     }
 
     // Adiciona a nova meta ao array 'metas', com 'checkbox' inicializado como false (não concluída).
-    metas.push({ value: meta, checkbox: false })
+    metas.push({ value: meta, checked: false })
 }
 
 // Função assíncrona que permite listar as metas e marcar/desmarcar as metas como concluídas.
@@ -38,28 +39,43 @@ async function listarMetas() {
         choices: [...metas], // Cada meta é exibida como uma escolha para o usuário.
         instructions: false // Não exibe as instruções automáticas da biblioteca.
     })
-    
+
+     // Reseta todas as metas para não marcadas (checkbox = false).
+     metas.forEach(meta => {
+        meta.checked = false
+    })
+
     // Verifica se não há metas cadastradas.
     if (metas.length == 0) {
         console.log("Nenhuma meta selecionada!") // Exibe uma mensagem informando que não há metas para marcar.
         return
     }
 
-    // Reseta todas as metas para não marcadas (checkbox = false).
-    metas.forEach(meta => {
-        meta.checkbox = false
-    })
-
+   
     // Percorre as respostas (metas selecionadas pelo usuário) e marca essas metas como concluídas.
     respostas.forEach(resposta => {
         const meta = metas.find(meta => {
             return meta.value == resposta // Encontra a meta correspondente com base no valor da resposta.
         })
-        meta.checkbox = true // Marca a meta como concluída (checkbox = true).
+        meta.checked = true // Marca a meta como concluída (checkbox = true).
     })
     
     // Informa que as metas selecionadas foram marcadas como concluídas.
     console.log("Meta(s) marcadas como concluída(s)")
+}
+
+async function MetasRealizadas() {
+    const realizadas = metas.filter((meta)=> {
+        return meta.checked
+    });
+    if(realizadas.length == 0){
+        console.log("Não existe nenhuma meta realizada :(")
+        return;
+    }
+    await select({
+        message: "Metas realizadas",
+        choices: [...realizadas]
+    })
 }
 
 // Função principal do programa que controla o fluxo de interação via um menu.
@@ -79,6 +95,10 @@ async function start() {
                     value: "Listar" // Valor correspondente a esta opção.
                 },
                 {
+                    name: "Metas realizadas", 
+                    value: "realizadas" 
+                },
+                {
                     name: "sair", // Opção para sair do programa.
                     value: "sair" // Valor correspondente a esta opção.
                 }
@@ -89,14 +109,16 @@ async function start() {
         switch (opcao) {
             case "cadastrar": // Se o usuário escolheu a opção de cadastrar uma nova meta:
                 await cadastrarMeta() // Chama a função 'cadastrarMeta' para adicionar uma nova meta.
-                console.log(metas) // Exibe o array 'metas' para o usuário, mostrando todas as metas cadastradas.
                 break
 
             case "Listar": // Se o usuário escolheu a opção de listar as metas:
                 await listarMetas() // Chama a função 'listarMetas' para listar as metas e marcar as concluídas.
                 break
-
+            case "Metas realizadas":
+                await MetasRealizadas()
+                break    
             case "sair": // Se o usuário escolheu a opção de sair:
+                console.log("Até mais!")
                 return // Encerra o programa.
         }
     }

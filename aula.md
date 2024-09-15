@@ -44,6 +44,7 @@ Como um quebra cabeça, vocẽ ira utilizar peças para criar aogorimos, para re
 - Matemáticos { +, -, *, /, %, ++, -- }
 - Lógicos { &&, ||, ! }
 - [x] Relacionais { >, <, >=, <=, ==, !=, ===, !== }
+- [x] Spread opereator { ... } Copia os elementos de um array para outro array
 
 # Modulos Node.js
 
